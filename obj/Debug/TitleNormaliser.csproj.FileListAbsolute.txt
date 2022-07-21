@@ -1,0 +1,15 @@
+H:\Jonathan\Workspace\TitleNormaliser\obj\Debug\TitleNormaliserSettingsView.baml
+H:\Jonathan\Workspace\TitleNormaliser\obj\Debug\TitleNormaliserSettingsView.g.cs
+H:\Jonathan\Workspace\TitleNormaliser\obj\Debug\TitleNormaliser_MarkupCompile.cache
+H:\Jonathan\Workspace\TitleNormaliser\obj\Debug\TitleNormaliser.g.resources
+H:\Jonathan\Workspace\TitleNormaliser\obj\Debug\TitleNormaliser.csproj.CoreCompileInputs.cache
+H:\Jonathan\Workspace\TitleNormaliser\bin\Debug\extension.yaml
+H:\Jonathan\Workspace\TitleNormaliser\bin\Debug\icon.png
+H:\Jonathan\Workspace\TitleNormaliser\bin\Debug\TitleNormaliser.dll
+H:\Jonathan\Workspace\TitleNormaliser\bin\Debug\TitleNormaliser.pdb
+H:\Jonathan\Workspace\TitleNormaliser\bin\Debug\Playnite.SDK.dll
+H:\Jonathan\Workspace\TitleNormaliser\bin\Debug\Playnite.SDK.xml
+H:\Jonathan\Workspace\TitleNormaliser\obj\Debug\TitleNormaliser.csproj.CopyComplete
+H:\Jonathan\Workspace\TitleNormaliser\obj\Debug\TitleNormaliser.dll
+H:\Jonathan\Workspace\TitleNormaliser\obj\Debug\TitleNormaliser.pdb
+H:\Jonathan\Workspace\TitleNormaliser\bin\Debug\System.Collections.NonGeneric.dll
