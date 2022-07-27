@@ -5,7 +5,7 @@ Packages:
     ReleaseDate: 2022-07-27
     PackageUrl: https://github.com/Jhanlon95/playnite-title-normaliser/releases/download/v1.1/TitleNormaliser_2a4b8ac6-f29c-4dc5-97dc-aa89504a0979_1_2.pext
     Changelog:
-      - Built the pext file wrong in previous release :(
+      - Extension will now capatlise the first letter no matter the word (i.e. The Lord of the Rings)
   - Version: 1.1
     RequiredApiVersion: 6.2.0
     ReleaseDate: 2022-07-22
