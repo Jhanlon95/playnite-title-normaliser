@@ -46,29 +46,37 @@ namespace TitleNormaliser
                         String lowerWord = word.ToLower();
                         String capitalWord = word.ToUpper();
 
-                        if (!ignoredWords.Contains(lowerWord) && lowerCaseWords.Contains(lowerWord))
-                        {
-                            sb.Append(lowerWord);
+                        //If defined by users ignore list or the extensions ignore list then append only the word
+                        if (ignoredWords.Contains(lowerWord)) {
+                            sb.Append(word);
                         }
-                        
-                        else if (!ignoredWords.Contains(lowerWord) && capitalCaseWords.Contains(lowerWord))
-                        {
-                            sb.Append(capitalWord);
-                        }
-
-                        else if (!ignoredWords.Contains(lowerWord))
+                        //If it's the first element in the string then make it Title case (i.e. The Lord of the Rings)
+                        else if (word.Equals(words.ElementAt(0)))
                         {
                             sb.Append(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(lowerWord));
                         }
+                        //If word is on users defined Capitlised word list then append the fully capitalised word
+                        else if (capitalCaseWords.Contains(lowerWord))
+                        {
+                            sb.Append(capitalWord);
+                        }
+                        //Same as above but with all lower case words
+                        else if (lowerCaseWords.Contains(lowerWord))
+                        {
+                            sb.Append(lowerWord);
+                        }
+                        //Otherwise Titlecase the word
                         else
                         {
-                            sb.Append(word);
+                            sb.Append(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(lowerWord));
                         }
                         sb.Append(" ");
                     }
 
+                    //Remove whitespace at the end
                     sb.Remove(sb.Length - 1, 1);
 
+                    //Check for any Roman Numerals that need to be capatilised
                     if (Regex.IsMatch(sb.ToString(), pattern))
                     {
                         sb.Replace(sb.ToString(), Regex.Replace(sb.ToString(), pattern, c => c.ToString().ToUpper()));
