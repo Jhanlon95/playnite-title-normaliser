@@ -2126,9 +2126,9 @@
             <param name="name"></param>
         </member>
         <member name="F:Playnite.SDK.Models.Company.Empty">
-            <summary>
+             <summary>
             
-            </summary>
+             </summary>
         </member>
         <member name="T:Playnite.SDK.Models.Developer">
             <summary>
@@ -4483,6 +4483,11 @@
         <member name="P:Playnite.SDK.Plugins.SidebarItem.Closed">
             <summary>
             Called when view is closed.
+            </summary>
+        </member>
+        <member name="M:Playnite.SDK.Plugins.SidebarItem.#ctor">
+            <summary>
+            Creates new instance of <see cref="T:Playnite.SDK.Plugins.SidebarItem"/>.
             </summary>
         </member>
         <member name="T:Playnite.SDK.Plugins.TopPanelItem">

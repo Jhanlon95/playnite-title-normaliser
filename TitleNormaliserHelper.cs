@@ -23,7 +23,7 @@ namespace TitleNormaliser
 
 
 
-        public static void NormaliseTitle(IItemCollection<Game> games, TitleNormaliserSettings savedSettings)
+        public static void NormaliseTitle(List<Game> games, TitleNormaliserSettings savedSettings)
         {
             String[] ignoredArray = savedSettings.Option1.Split();
             String[] capataliseArray = savedSettings.Option2.Split();
@@ -82,7 +82,7 @@ namespace TitleNormaliser
                         sb.Replace(sb.ToString(), Regex.Replace(sb.ToString(), pattern, c => c.ToString().ToUpper()));
                     }
                     x.Name = sb.ToString();
-                    games.Update(x);
+                    API.Instance.Database.Games.Update(x);
                 }
             }
         }

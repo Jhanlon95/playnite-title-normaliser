@@ -34,7 +34,51 @@ namespace TitleNormaliser
 
         public override void OnLibraryUpdated(OnLibraryUpdatedEventArgs args)
         {
-            // Add code to be executed when library is updated.
+            if (!settings.Settings.NormaliseOnUpdate)
+            {
+                settings.Settings.LastRefreshOnLibUpdate = DateTime.Now;
+                SavePluginSettings(settings.Settings);
+                return;
+            }
+
+            List<Game> updateGames = new List<Game>();
+
+            GlobalProgressOptions progressOptions = new GlobalProgressOptions("Normalising on library update", true)
+            {
+                IsIndeterminate = false
+            };
+            PlayniteApi.Dialogs.ActivateGlobalProgress((a) =>
+            {
+                var games = PlayniteApi.Database.Games;
+                a.ProgressMaxValue = games.Count();
+
+                using (PlayniteApi.Database.BufferedUpdate())
+                {
+                    foreach (var game in games)
+                    {
+                        a.CurrentProgressValue++;
+                        if (a.CancelToken.IsCancellationRequested)
+                        {
+                            break;
+                        }
+
+                        if (game.Added != null && game.Added > settings.Settings.LastRefreshOnLibUpdate)
+                        {
+                            if (!settings.Settings.NormaliseOnUpdate)
+                            {
+                                continue;
+                            }
+                            updateGames.Add(game);
+                        }
+
+                    }
+
+                    TitleNormaliserHelper.NormaliseTitle(updateGames, settings.Settings);
+                } 
+            }, progressOptions);
+
+            settings.Settings.LastRefreshOnLibUpdate = DateTime.Now;
+            SavePluginSettings(settings.Settings);
         }
 
         public override IEnumerable<MainMenuItem> GetMainMenuItems(GetMainMenuItemsArgs args)
@@ -51,14 +95,43 @@ namespace TitleNormaliser
                         GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
                             "TitleNormaliser - Normalising Game Titles",
                             true
-                        );
-                        globalProgressOptions.IsIndeterminate = false;
+                        ) { IsIndeterminate = false };
 
                         PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
                         {
                             try
                             {
-                                TitleNormaliserHelper.NormaliseTitle(PlayniteApi.Database.Games, settings.Settings);
+                                List<Game> list = API.Instance.Database.Games.ToList();
+
+                                TitleNormaliserHelper.NormaliseTitle(list, settings.Settings);
+                            }
+                            catch (Exception ex)
+                            {
+                                logger.Error(ex.StackTrace);
+                            }
+                        }, globalProgressOptions);
+
+
+                    }
+                },
+
+                new MainMenuItem
+                {
+                    MenuSection = "@TitleNormalisation",
+                    Description = "Normalise Selected Titles",
+                    Action = (mainMenuItem) =>
+                    {
+                        GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
+                            "TitleNormaliser - Normalising Game Titles",
+                            true
+                        ) { IsIndeterminate = false };
+
+                        PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+                        {
+                            try
+                            {
+                              List<Game> list = API.Instance.MainView.SelectedGames.ToList();
+                              TitleNormaliserHelper.NormaliseTitle(list, settings.Settings);
                             }
                             catch (Exception ex)
                             {
@@ -74,7 +147,23 @@ namespace TitleNormaliser
             return mainMenuItems;
         }
 
-        
+        public override IEnumerable<GameMenuItem> GetGameMenuItems(GetGameMenuItemsArgs args)
+        {
+            if (settings.Settings.ShowRightClickMenu)
+            {
+                yield return new GameMenuItem
+                {
+                    MenuSection = "Title Normaliser",
+                    Description = "Normalise Selected Titles",
+
+                    Action = (mainMenuItem) =>
+                    {
+                        var games = args.Games.Distinct().ToList();
+                        TitleNormaliserHelper.NormaliseTitle(games, settings.Settings);
+                    }
+                };
+            }
+        }
 
         public override ISettings GetSettings(bool firstRunSettings)
         {

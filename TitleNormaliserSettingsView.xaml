@@ -2,14 +2,53 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:titlenormaliser="clr-namespace:TitleNormaliser" d:DataContext="{d:DesignInstance Type=titlenormaliser:TitleNormaliserSettings}"
              mc:Ignorable="d"
              d:DesignHeight="400" d:DesignWidth="600">
     <StackPanel>
-        <TextBlock Text="Ignore these terms (extension will leave them as they are)"/>
-        <TextBlock Text="Seperate the terms by spaces i.e. 'ignore these four terms'"/>
-        <TextBox Text="{Binding Settings.Option1}"/>
-        <TextBlock Text="Always Capatalise these terms"/>
-        <TextBox Text="{Binding Settings.Option2}"/>
+        <DockPanel HorizontalAlignment="Left" Margin="15,15,0,15">
+            <StackPanel>
+                <TextBlock Margin="0,0,0,5"> Ignore these terms (extension will leave them as they are) <LineBreak></LineBreak> the terms by spaces i.e. 'ignore these four terms'</TextBlock>
+                <TextBox Text="{Binding Settings.Option1}" Width="450"/>
+            </StackPanel>
+        </DockPanel>
+        <DockPanel HorizontalAlignment="Left" Margin="15,0,0,15">
+            <StackPanel>
+                <TextBlock Margin="0,0,0,5">Always Capatalise these terms</TextBlock>
+                <TextBox Text="{Binding Settings.Option2}" Width="450"/>
+            </StackPanel>
+        </DockPanel>
+        <StackPanel Orientation="Horizontal">
+        <DockPanel HorizontalAlignment="Left" Margin="15,0,0,0">
+            <StackPanel Margin="0,0,15,0">
+                <TextBlock Text="Perform Title Normalising on library update" HorizontalAlignment="Center" />
+                <CheckBox IsChecked="{Binding Settings.NormaliseOnUpdate}" HorizontalAlignment="Center" Margin="5,15,0,0" RenderTransformOrigin="0.5,0.5">
+                    <CheckBox.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleY="1.3" ScaleX="1.3"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </CheckBox.RenderTransform>
+                </CheckBox>
+            </StackPanel>
+        </DockPanel>
+        <DockPanel HorizontalAlignment="Left" Margin="15,0,0,0">
+            <StackPanel>
+                <TextBlock Text="Show in right click menu" HorizontalAlignment="Center" />
+                    <CheckBox IsChecked="{Binding Settings.ShowRightClickMenu}" HorizontalAlignment="Center" Margin="5,15,0,0" RenderTransformOrigin="0.5,0.5">
+                    <CheckBox.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleY="1.3" ScaleX="1.3"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </CheckBox.RenderTransform>
+                </CheckBox>
+            </StackPanel>
+        </DockPanel>
+        </StackPanel>
     </StackPanel>
 </UserControl>

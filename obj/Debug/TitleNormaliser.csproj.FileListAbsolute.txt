@@ -13,4 +13,5 @@ H:\Jonathan\Workspace\TitleNormaliser\obj\Debug\TitleNormaliser.csproj.CopyCompl
 H:\Jonathan\Workspace\TitleNormaliser\obj\Debug\TitleNormaliser.dll
 H:\Jonathan\Workspace\TitleNormaliser\obj\Debug\TitleNormaliser.pdb
 H:\Jonathan\Workspace\TitleNormaliser\bin\Debug\System.Collections.NonGeneric.dll
+H:\Jonathan\Workspace\TitleNormaliser\obj\Debug\TitleNormaliser_MarkupCompile.lref
 H:\Jonathan\Workspace\TitleNormaliser\obj\Debug\TitleNormaliser.csproj.AssemblyReference.cache
