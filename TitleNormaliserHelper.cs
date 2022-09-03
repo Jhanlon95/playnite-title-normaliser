@@ -47,7 +47,8 @@ namespace TitleNormaliser
                         String capitalWord = word.ToUpper();
 
                         //If defined by users ignore list or the extensions ignore list then append only the word
-                        if (ignoredWords.Contains(lowerWord)) {
+                        if (ignoredWords.Contains(lowerWord))
+                        {
                             sb.Append(word);
                         }
                         //If it's the first element in the string then make it Title case (i.e. The Lord of the Rings)
@@ -65,6 +66,12 @@ namespace TitleNormaliser
                         {
                             sb.Append(lowerWord);
                         }
+                        //Don't want to title case words that begin with a number such a positions like 1st/2nd or 25th anniversary etc.
+                        else if (char.IsDigit(word[0]))
+                        {
+                            sb.Append(lowerWord);
+                        }
+
                         //Otherwise Titlecase the word
                         else
                         {
@@ -72,16 +79,13 @@ namespace TitleNormaliser
                         }
                         sb.Append(" ");
                     }
-
-                    //Remove whitespace at the end
-                    sb.Remove(sb.Length - 1, 1);
-
+                    
                     //Check for any Roman Numerals that need to be capatilised
                     if (Regex.IsMatch(sb.ToString(), pattern))
                     {
                         sb.Replace(sb.ToString(), Regex.Replace(sb.ToString(), pattern, c => c.ToString().ToUpper()));
                     }
-                    x.Name = sb.ToString();
+                    x.Name = sb.ToString().Trim();
                     API.Instance.Database.Games.Update(x);
                 }
             }
