@@ -1,5 +1,11 @@
 AddonId: TitleNormaliser_2a4b8ac6-f29c-4dc5-97dc-aa89504a0979
 Packages:
+  - Version: 1.4
+    RequiredApiVersion: 6.2.0
+    ReleaseDate: 2022-09-03
+    PackageUrl: https://github.com/Jhanlon95/playnite-title-normaliser/releases/download/v1.4/TitleNormaliser_2a4b8ac6-f29c-4dc5-97dc-aa89504a0979_1_4.pext
+    Changelog:
+      - Making positions such as 1st, 2nd and anniversaries like 25th lower case unless added as part of the ignore or upper case lists
   - Version: 1.3
     RequiredApiVersion: 6.2.0
     ReleaseDate: 2022-08-03
