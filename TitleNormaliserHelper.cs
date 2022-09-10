@@ -27,6 +27,7 @@ namespace TitleNormaliser
         {
             String[] ignoredArray = savedSettings.Option1.Split();
             String[] capataliseArray = savedSettings.Option2.Split();
+            bool turnDashToColon = savedSettings.TurnDashIntoColon;
 
             PopulateIgnoredWordsList(ignoredArray);
             PopulateLowerCaseWordsList();
@@ -36,12 +37,23 @@ namespace TitleNormaliser
             {
                 if (x.Name != null)
                 {
-                    String[] words = x.Name.Split();
+                    string[] words = x.Name.Split();
                     StringBuilder sb = new StringBuilder();
+                    string previousWord;
+                    string newWord;
+                    int i = 0;
 
-
-                    foreach (String word in words)
+                    foreach (string word in words)
                     {
+                        
+                        //Turn dashes in titles into colons if setting is enabled
+                        if (turnDashToColon && word.Equals("-"))
+                        {
+                            previousWord = words.GetValue(i - 1).ToString();
+                            newWord =  previousWord + ":";
+                            sb.Replace(previousWord, newWord);
+                            continue;
+                        }
 
                         String lowerWord = word.ToLower();
                         String capitalWord = word.ToUpper();
@@ -78,6 +90,8 @@ namespace TitleNormaliser
                             sb.Append(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(lowerWord));
                         }
                         sb.Append(" ");
+
+                        i += 1;
                     }
                     
                     //Check for any Roman Numerals that need to be capatilised

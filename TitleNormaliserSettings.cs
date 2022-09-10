@@ -18,11 +18,13 @@ namespace TitleNormaliser
         private bool normaliseOnUpdate = false;
         private bool showRightClickMenu = false;
         private bool optionThatWontBeSaved = false;
+        private bool turnDashIntoColon = false;
 
         public string Option1 { get => option1; set => SetValue(ref option1, value); }
         public string Option2 { get => option2; set => SetValue(ref option2, value); }
         public bool NormaliseOnUpdate { get => normaliseOnUpdate; set => SetValue(ref normaliseOnUpdate, value); }
         public bool ShowRightClickMenu { get => showRightClickMenu; set => SetValue(ref showRightClickMenu, value); }
+        public bool TurnDashIntoColon { get => turnDashIntoColon; set => SetValue(ref turnDashIntoColon, value); }
 
         // Playnite serializes settings object to a JSON object and saves it as text file.
         // If you want to exclude some property from being saved then use `JsonDontSerialize` ignore attribute.
