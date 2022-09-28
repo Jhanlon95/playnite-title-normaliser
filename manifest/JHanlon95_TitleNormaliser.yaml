@@ -1,5 +1,12 @@
 AddonId: TitleNormaliser_2a4b8ac6-f29c-4dc5-97dc-aa89504a0979
 Packages:
+  - Version: 1.6
+    RequiredApiVersion: 6.5.0
+    ReleaseDate: 2022-09-28
+    PackageUrl: https://github.com/Jhanlon95/playnite-title-normaliser/releases/download/v1.6/TitleNormaliser_2a4b8ac6-f29c-4dc5-97dc-aa89504a0979_1_6.pext
+    Changelog:
+      - Improved Roman Numerals Regex to include extra x, i.e. XXL
+      - Bug fixes with turning Dash into Colon
   - Version: 1.5
     RequiredApiVersion: 6.2.0
     ReleaseDate: 2022-09-10
