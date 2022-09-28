@@ -1,19 +1,18 @@
-﻿using Playnite.SDK.Models;
-using Playnite.SDK;
+﻿using Playnite.SDK;
+using Playnite.SDK.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Collections;
 
 namespace TitleNormaliser
 {
     public static class TitleNormaliserHelper
     {
-        private static readonly String pattern = @"(?i)\b(?=[ivxlcdm]+)M{0,4}(?:CM|CD|D?C{0,3})(?:XC|XL|L?X{0,3})(?:IX|IV|V?I{0,3})\b";
+        private static readonly String pattern = @"(?i)\b(?=[ivxlcdm]+)M{0,4}(?:CM|CD|D|X?C{0,3})(?:XC|XL|L?X{0,3})(?:IX|IV|V?I{0,3})\b";
 
         private static ArrayList lowerCaseWords = new ArrayList();
 
@@ -33,25 +32,31 @@ namespace TitleNormaliser
             PopulateLowerCaseWordsList();
             PopulateCapitalWordsList(capataliseArray);
 
-            foreach (Game x in games)
+            foreach (Game game in games)
             {
-                if (x.Name != null)
+                if (game.Name != null)
                 {
-                    string[] words = x.Name.Split();
-                    StringBuilder sb = new StringBuilder();
-                    string previousWord;
-                    string newWord;
+                    string[] words = game.Name.Split();
+                    StringBuilder normalisedTitle = new StringBuilder();
                     int i = 0;
+
+                    string previousWord = "";
+                    string wordBeforeDash = "";
+                    string wordWithColonAdded = "";
 
                     foreach (string word in words)
                     {
-                        
+
                         //Turn dashes in titles into colons if setting is enabled
                         if (turnDashToColon && word.Equals("-"))
                         {
-                            previousWord = words.GetValue(i - 1).ToString();
-                            newWord =  previousWord + ":";
-                            sb.Replace(previousWord, newWord);
+                            //Want to ignore terms like "Nitro-Fueled" 
+                            wordBeforeDash = words.GetValue(i - 1).ToString();
+                            wordWithColonAdded = wordBeforeDash + ":";
+                            previousWord = wordWithColonAdded;
+
+                            normalisedTitle.Replace(wordBeforeDash, wordWithColonAdded);
+                            i += 2;
                             continue;
                         }
 
@@ -61,46 +66,52 @@ namespace TitleNormaliser
                         //If defined by users ignore list or the extensions ignore list then append only the word
                         if (ignoredWords.Contains(lowerWord))
                         {
-                            sb.Append(word);
+                            normalisedTitle.Append(word);
                         }
                         //If it's the first element in the string then make it Title case (i.e. The Lord of the Rings)
                         else if (word.Equals(words.ElementAt(0)))
                         {
-                            sb.Append(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(lowerWord));
+                            normalisedTitle.Append(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(lowerWord));
                         }
                         //If word is on users defined Capitlised word list then append the fully capitalised word
                         else if (capitalCaseWords.Contains(lowerWord))
                         {
-                            sb.Append(capitalWord);
+                            normalisedTitle.Append(capitalWord);
                         }
                         //Same as above but with all lower case words
-                        else if (lowerCaseWords.Contains(lowerWord))
+                        else if (lowerCaseWords.Contains(lowerWord) && !previousWord.Contains(":"))
                         {
-                            sb.Append(lowerWord);
+                            normalisedTitle.Append(lowerWord);
                         }
                         //Don't want to title case words that begin with a number such a positions like 1st/2nd or 25th anniversary etc.
                         else if (char.IsDigit(word[0]))
                         {
-                            sb.Append(lowerWord);
+                            normalisedTitle.Append(lowerWord);
                         }
 
                         //Otherwise Titlecase the word
                         else
                         {
-                            sb.Append(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(lowerWord));
+                            normalisedTitle.Append(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(lowerWord));
                         }
-                        sb.Append(" ");
+                        normalisedTitle.Append(" ");
+
+                        //stop out of bounds error
+                        if (i != 0 && previousWord.Contains(":"))
+                        {
+                            previousWord = words.ElementAt(i - 1);
+                        }
 
                         i += 1;
                     }
                     
                     //Check for any Roman Numerals that need to be capatilised
-                    if (Regex.IsMatch(sb.ToString(), pattern))
+                    if (Regex.IsMatch(normalisedTitle.ToString(), pattern))
                     {
-                        sb.Replace(sb.ToString(), Regex.Replace(sb.ToString(), pattern, c => c.ToString().ToUpper()));
+                        normalisedTitle.Replace(normalisedTitle.ToString(), Regex.Replace(normalisedTitle.ToString(), pattern, c => c.ToString().ToUpper()));
                     }
-                    x.Name = sb.ToString().Trim();
-                    API.Instance.Database.Games.Update(x);
+                    game.Name = normalisedTitle.ToString().Trim();
+                    API.Instance.Database.Games.Update(game);
                 }
             }
         }
